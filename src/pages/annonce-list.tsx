@@ -3,50 +3,61 @@ import Annonce from "../models/annonce";
 import AnnonceService from "../services/annonce-service";
 import {Link} from "react-router-dom";
 import AnnonceCard from "../components/annonce-card";
-import AnnonceSearch from "../components/annonce-search";
+import Pagination from "../components/pagination";
 
 const AnnonceList: FunctionComponent = () => {
 
     const [annonces, setAnnonces] = useState<Annonce[]>([]);
-    const [totalAnnonces, setTotalAnnonces] = useState<number>(0);
-    const [currentPage, setCurrentPage] = useState<number>(3)
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [categories, setCategories] = useState<Array<string>>(['all', '6 éme', '5 éme', '4 éme', '3 éme', '2 nde', '1 er', 'Tle']);
+    const [currentCategorie, setCurrentCategorie] = useState<string>();
 
     useEffect(() => {
-        AnnonceService.getAnnonces().then(annonces => setAnnonces(annonces))
-    }, []);
+        AnnonceService.getAnnoncesParClasse(currentCategorie).then(annonces => setAnnonces(annonces));
+    }, [currentCategorie]);
 
     const handleChangePage = (page: number) => {
         setCurrentPage(page);
     };
 
-    const itemsPerPage = 20;
-    const pages = [];
+    const handleChangeCategorie = (categorie: string) => {
+        setCurrentCategorie(categorie);
+    };
 
-    const pagesCount = Math.ceil(annonces.length / itemsPerPage);
-    for (let i = 1; i <= pagesCount; i++) {
-        pages.push(i);
-    }
-    console.log(pages);
+    const itemsPerPage = 10;
+
+
+    const start = currentPage * itemsPerPage - itemsPerPage;
+    const paginationAnnonces = annonces.slice(start, start+itemsPerPage);
+
 
     return (
         <div>
-            <div className="container offset-1.5">
+            <div className="container">
                 <div className="row">
-                    {annonces.map(annonce => (
-                        <AnnonceCard key={annonce.id} annonce={annonce}/>
-                    ))}
+                    <div className="col-lg-2">
+                        <h1 className="my-4">Catégories</h1>
+                        <div className="list-group">
+                            {categories.map(categorie => (
+                                <button  className={"list-group-item" + (currentCategorie === categorie && " active")} onClick={() => handleChangeCategorie(categorie)}>{categorie}</button>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="col-lg-10">
+                        <div className="row">
+                            {paginationAnnonces.map(annonce => (
+                                <AnnonceCard key={annonce.id} annonce={annonce}/>
+                            ))}
+                        </div>
+                    </div>
                 </div>
+
+
+                <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={annonces.length} onPageChanged={handleChangePage}/>
+
                 <Link className="btn-floating btn-large waves-effect waves-light red z-depth-3" style={{position: 'fixed', bottom:'25px' , right: '25px'}} to="/pokemon/add">
                     <i className="material-icons">add</i>
                 </Link>
-                <ul className="pagination center-align">
-                    <li className={ "waves-effect" + (currentPage === 1 && "disabled")}><button className={ "waves-effect" + (currentPage === 1 && "disabled")} onClick={() => handleChangePage(currentPage - 1)}><i className="material-icons">chevron_left</i></button></li>
-                    {pages.map( page =>
-                        <li key={page} className={"waves effect" + (currentPage === page && "active")}><button onClick={() => handleChangePage(page)}>{page}</button></li>
-                    )}
-                    <li className={"" + (currentPage === pagesCount && "disabled")} onClick={() => handleChangePage(currentPage + 1)}><button ><i className="material-icons">chevron_right</i></button></li>
-                </ul>
-
             </div>
         </div>
     );

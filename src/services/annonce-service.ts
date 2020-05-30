@@ -15,6 +15,26 @@ export default class AnnonceService {
             .catch(error => this.handleError(error));
     }
 
+    static getAnnoncesParClasse(classe?: string): Promise<Annonce[]> {
+            if(classe){
+
+                if(classe === 'all') {
+                    return fetch(`http://localhost:3001/api/annonces?order[created]=desc`)
+                        .then(response => response.json())
+                        .then(res => res["hydra:member"])
+                        .catch(error => this.handleError(error));
+                }
+                return fetch(`http://localhost:3001/api/annonces?order[created]=desc&classe=${classe}`)
+                    .then(response => response.json())
+                    .then(res => res["hydra:member"])
+                    .catch(error => this.handleError(error));
+            }
+        return fetch(`http://localhost:3001/api/annonces?order[created]=desc`)
+            .then(response => response.json())
+            .then(res => res["hydra:member"])
+            .catch(error => this.handleError(error));
+    }
+
     static getAnnoncesParPage(num: number): Promise<Annonce[]> {
         return fetch(`http://localhost:3001/api/annonces?page=${num}&order[created]=desc`)
             .then(response => response.json())
