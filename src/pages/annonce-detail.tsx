@@ -5,6 +5,8 @@ import './annonce-detail.css';
 import {Carousel, } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Annonce from "../models/annonce";
+import moment from "moment";
+import 'moment/locale/fr';
 
 type Params = { id: string };
 
@@ -16,17 +18,25 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
         AnnonceService.getAnnonce(+match.params.id).then(annonce =>setAnnonce(annonce));
     }, [match.params.id]);
 
+    const formatDate = (str: any) => {
+        return moment(str).format('ll');
+    };
+
     return (
         <div className="container">
             { annonce ? (
-            <div className="row">
+        <div >
 
-                <div className="col-lg-3">
-                    <h1 className="my-4">Shop Name</h1>
-                    <div className="list-group">
-                        <a href="#" className="list-group-item active">Category 1</a>
-                        <a href="#" className="list-group-item">Category 2</a>
-                        <a href="#" className="list-group-item">Category 3</a>
+            <div className="container">
+                <div className="row">
+                <div className="col-lg-3 mt-4">
+                    <div className="card bg-light">
+                        <div className="card-header">Annonce</div>
+                        <div className="card-body">
+                            <p>Posté par : {annonce.user!.firstName}&nbsp;{annonce.user!.lastName}</p>
+                            <p>Quartier :&nbsp;{annonce.ville}</p>
+                            <p>Publié le: {formatDate(annonce.created)}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -71,45 +81,40 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
                             </Carousel.Item>
                         </Carousel>
                             <div className="card-body">
-                                <h3 className="card-title"> {annonce.user!.firstName}</h3>
-                                <h4>$24.99</h4>
-                                <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores,
-                                    sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure,
-                                    ducimus!</p>
-                                <span className="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-                                4.0 stars
+                                <h3 className="card-title"> {annonce.titre}&nbsp;<span>{annonce.classe}</span></h3>
+
+                                <label>Description :</label>
+                                <p className="card-text">{annonce.description}</p>
+                                <hr />
+                                <label>Fiche technique :</label>
+                                <p >Editions:&nbsp;{annonce.editeur}<br />Année publication:&nbsp;{annonce.parution}</p>
+                                <p>Contact par email: {annonce.user!.email}&nbsp;&nbsp;&nbsp;Contact par téléphone: {annonce.user!.number}</p>
                             </div>
+                        <small className="text-muted p-1 ml-5">&nbsp;&nbsp;Cette annonce n'a pas été publiée par un préposé de TrocBook. TrocBook ne peut pas garantir l’origine du produit</small>
                     </div>
 
                     <div className="card card-outline-secondary my-4">
                         <div className="card-header">
-                            Product Reviews
+                            Informations
                         </div>
                         <div className="card-body">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam
-                                inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam
-                                aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                            <small className="text-muted">Posted by Anonymous on 3/1/17</small>
+                            <h3 className="text-lg-center">Qu'avez-vous à troquez ?</h3><br />
+                            <p className="text-center">Troquez tout vos livres scolaires gratuitement sur TrocBook</p>
+                            <button type="button" className="offset-3 btn btn-primary btn-lg ">Publiez votre annonce gratuitement</button>
                             <hr />
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam
-                                    inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam
-                                    aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                                <small className="text-muted">Posted by Anonymous on 3/1/17</small>
-                                <hr />
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam
-                                        inventore, similique necessitatibus neque non! Doloribus, modi sapiente
-                                        laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint
-                                        natus.</p>
-                                    <small className="text-muted">Posted by Anonymous on 3/1/17</small>
-                                    <hr />
-                                        <a href="#" className="btn btn-success">Leave a Review</a>
+                            <ul>
+                                <h4>Nos Conseils de Sécurité</h4>
+                                <li>Ne troquez, sous aucun prétexte, avant d'avoir vu le livre.</li>
+                                <li>N'envoyez jamais d'argent pour « Réserver » un livre.</li>
+                                <li>Vérifiez la qualité du produit avant de troquer.</li>
+                                <li>Ne donnez pas d’informations personnelles (coordonnées bancaires, numéro de carte de crédit ...).</li>
+                            </ul>
                         </div>
                     </div>
-
                 </div>
-
+                </div>
             </div>
+        </div>
             ) : (
                 <h4 className="center">CHARGEMENT ...</h4>
             )}
