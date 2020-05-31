@@ -2,6 +2,8 @@ import React, {FunctionComponent, useState} from 'react';
 import Annonce from '../models/annonce';
 import './css/annonce-card.css';
 import {useHistory} from "react-router-dom";
+import moment from "moment";
+import 'moment/locale/fr';
 
 type Props = {
     annonce: Annonce,
@@ -25,6 +27,10 @@ const AnnonceCard: FunctionComponent<Props> = ({annonce, borderColor='#009688'})
         history.push(`/annonces/${id}`);
     };
 
+    const formatDate = (str: any) => {
+        return moment(str).format('llll');
+    };
+
     return (
         <div className="col-lg-5 offset-1" onClick={() => goToAnnonce(annonce.id)} onMouseEnter={showBorder} onMouseLeave={hideBorder} >
             <div className="card mb-3 bobo ml-3 mt-4" style={{borderColor: color}} >
@@ -38,7 +44,7 @@ const AnnonceCard: FunctionComponent<Props> = ({annonce, borderColor='#009688'})
                             <p className="card-text">{annonce.editeur}</p>
                             <p className="card-text">{annonce.ville}</p>
                             <p className="card-text">
-                                <small className="text-muted">{annonce.created}</small>
+                                <small className="text-muted">{formatDate(annonce.created)}</small>
                             </p>
                         </div>
                     </div>

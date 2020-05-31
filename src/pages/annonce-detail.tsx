@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
-import Annonce from "../models/annonce";
 import AnnonceService from "../services/annonce-service";
 import './annonce-detail.css';
 import {Carousel, } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Annonce from "../models/annonce";
 
 type Params = { id: string };
 
@@ -18,6 +18,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
 
     return (
         <div className="container">
+            { annonce ? (
             <div className="row">
 
                 <div className="col-lg-3">
@@ -70,7 +71,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
                             </Carousel.Item>
                         </Carousel>
                             <div className="card-body">
-                                <h3 className="card-title">Product Name</h3>
+                                <h3 className="card-title"> {annonce.user!.firstName}</h3>
                                 <h4>$24.99</h4>
                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                                     Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores,
@@ -109,6 +110,9 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
                 </div>
 
             </div>
+            ) : (
+                <h4 className="center">CHARGEMENT ...</h4>
+            )}
         </div>
     );
 };

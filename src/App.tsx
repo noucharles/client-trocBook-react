@@ -11,7 +11,7 @@ const App: React.FC = () => {
         <Router>
             <div>
                 {/*La barre de navigation commun à toutes les pages*/}
-                <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+                <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                     <div className="navbar-brand">
                         <Link to="/" className="brand-logo center">TrocBook</Link>
                     </div>
