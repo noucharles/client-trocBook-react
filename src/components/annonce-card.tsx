@@ -32,7 +32,7 @@ const AnnonceCard: FunctionComponent<Props> = ({annonce, borderColor='#009688'})
     };
 
     return (
-        <div className="col-lg-5 offset-1" onClick={() => goToAnnonce(annonce.id)} onMouseEnter={showBorder} onMouseLeave={hideBorder} >
+        <div style={{cursor:'pointer'}} className="col-lg-5 offset-1" onClick={() => goToAnnonce(annonce.id)} onMouseEnter={showBorder} onMouseLeave={hideBorder} >
             <div className="card mb-3 bobo ml-3 mt-4" style={{borderColor: color}} >
                 <div className="row no-gutters" >
                     <div className="col-md-4">

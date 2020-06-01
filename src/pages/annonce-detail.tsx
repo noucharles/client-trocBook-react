@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
 import AnnonceService from "../services/annonce-service";
-import './annonce-detail.css';
 import {Carousel, } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Annonce from "../models/annonce";
@@ -13,6 +12,7 @@ type Params = { id: string };
 const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }) => {
 
     const [annonce, setAnnonce] = useState<Annonce|null>(null);
+    const history = useHistory();
 
     useEffect(() => {
         AnnonceService.getAnnonce(+match.params.id).then(annonce =>setAnnonce(annonce));
@@ -20,6 +20,10 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
 
     const formatDate = (str: any) => {
         return moment(str).format('ll');
+    };
+
+    const goToAnnoncesUser = (id: number) => {
+        history.push(`/annonces/utilisateur/${id}`);
     };
 
     return (
@@ -33,7 +37,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
                     <div className="card bg-light">
                         <div className="card-header">Annonce</div>
                         <div className="card-body">
-                            <p>Posté par : {annonce.user!.firstName}&nbsp;{annonce.user!.lastName}</p>
+                            <p style={{cursor:'pointer'}} onClick={() => goToAnnoncesUser(annonce.user!.id)}>Posté par : <b>{annonce.user!.firstName}&nbsp;{annonce.user!.lastName}</b></p>
                             <p>Quartier :&nbsp;{annonce.ville}</p>
                             <p>Publié le: {formatDate(annonce.created)}</p>
                         </div>
@@ -81,12 +85,15 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
                             </Carousel.Item>
                         </Carousel>
                             <div className="card-body">
-                                <h3 className="card-title"> {annonce.titre}&nbsp;<span>{annonce.classe}</span></h3>
+                                <h3 className="card-title mb-4"> {annonce.titre}&nbsp;<span>{annonce.classe}</span></h3>
 
-                                <label>Description :</label>
+                                <label className="h5">Description du livre :</label>
                                 <p className="card-text">{annonce.description}</p>
                                 <hr />
-                                <label>Fiche technique :</label>
+                                <label className="h5">Conditions de {annonce.user!.firstName} {annonce.user!.lastName} pour le troc d'un ou plusieurs livre(s) :</label>
+                                <p className="card-text">{annonce.user!.exigences}</p>
+                                <hr />
+                                <label className="h5">Fiche technique :</label>
                                 <p >Editions:&nbsp;{annonce.editeur}<br />Année publication:&nbsp;{annonce.parution}</p>
                                 <p>Contact par email: {annonce.user!.email}&nbsp;&nbsp;&nbsp;Contact par téléphone: {annonce.user!.number}</p>
                             </div>

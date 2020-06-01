@@ -43,4 +43,5 @@ export interface User {
     firstName : string;
     lastName : string;
     number : number;
+    exigences : string;
 }

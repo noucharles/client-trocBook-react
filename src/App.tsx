@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import AnnonceList from "./pages/annonce-list";
 import AnnonceSearch from "./components/annonce-search";
 import AnnonceDetail from "./pages/annonce-detail";
+import AnnonceUtilisateur from "./pages/annonce-utilisateur";
 
 const App: React.FC = () => {
 
@@ -23,6 +24,7 @@ const App: React.FC = () => {
                 <Switch>
                     <Route exact path="/" component={AnnonceList}/>
                     <Route exact path="/annonces" component={AnnonceList}/>
+                    <Route exact path="/annonces/utilisateur/:id" component={AnnonceUtilisateur}/>
                     <Route exact path="/annonces/:id" component={AnnonceDetail}/>
                 </Switch>
             </div>
