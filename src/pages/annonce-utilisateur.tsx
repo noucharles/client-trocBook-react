@@ -7,6 +7,8 @@ import UtilisateurService from "../services/utilisateur-service";
 import Utilisateur from "../models/utilisateur";
 import AnnonceCard from "../components/annonce-card";
 import './annonce-utilisateur.css';
+import AnnonceCardColunn from "../components/annonce-cardColunn";
+import Pagination from "../components/pagination";
 
 type Params = { id: string };
 
@@ -14,6 +16,8 @@ const AnnonceUtilisateur: FunctionComponent<RouteComponentProps<Params>> = ({ ma
 
     const [user, setUser] = useState<Utilisateur|null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [categories, setCategories] = useState<Array<string>>(['all', '6 éme', '5 éme', '4 éme', '3 éme', '2 nde', '1 er', 'Tle']);
+    const [currentCategorie, setCurrentCategorie] = useState<string>();
 
     useEffect(() => {
         UtilisateurService.getUtilisateur(+match.params.id).then(utilisateur =>setUser(utilisateur));
@@ -26,41 +30,49 @@ const AnnonceUtilisateur: FunctionComponent<RouteComponentProps<Params>> = ({ ma
     const handleChangePage = (page: number) => {
         setCurrentPage(page);
     };
+
+    const handleChangeCategorie = (categorie: string) => {
+        setCurrentCategorie(categorie);
+    };
+
     const itemsPerPage = 10;
     const start = currentPage * itemsPerPage - itemsPerPage;
+    // const paginationAnnonces = user.annonces!.slice(start, start+itemsPerPage);
 
     return (
         <div>
             { user ? (
-                        <div className="container ml-3 mt-4 ">
-                            <h2 className="text-center text-capitalize">Bibliothéque {user.firstName}</h2>
-
-                                <div className="row">
-                                    {  user.annonces!.map(annonce => (
-                                        <AnnonceCard key={annonce.id} annonce={annonce}/>
-                                    ))}
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-3">
+                            <div className="card bg-light mt-4">
+                                <div className="card-header">Bibliotheque de :</div>
+                                <div className="card-body">
+                                    <p>{user.firstName}&nbsp;<b>{user.lastName}</b></p>
+                                    <p>{user.number}</p>
+                                    <p><small>{user.email}</small></p>
                                 </div>
-
-                                    <div className="card card-outline-secondary ml-auto my-4">
-                                        <div className="card-header">
-                                            Informations
-                                        </div>
-                                        <div className="card-body">
-                                            <h3 className="text-lg-center">Qu'avez-vous à troquez ?</h3><br />
-                                            <p className="text-center">Troquez tout vos livres scolaires gratuitement sur TrocBook</p>
-                                            <button type="button" className="offset-3 btn btn-primary btn-lg ">Publiez votre annonce gratuitement</button>
-                                            <hr />
-                                            <ul>
-                                                <h4>Nos Conseils de Sécurité</h4>
-                                                <li>Ne troquez, sous aucun prétexte, avant d'avoir vu le livre.</li>
-                                                <li>N'envoyez jamais d'argent pour « Réserver » un livre.</li>
-                                                <li>Vérifiez la qualité du produit avant de troquer.</li>
-                                                <li>Ne donnez pas d’informations personnelles (coordonnées bancaires, numéro de carte de crédit ...).</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
+                            </div>
+                            <div className="card bg-light mt-4">
+                                <div className="card-header">Ces exigences pour le(s) troc(s):</div>
+                                <div className="card-body">
+                                    <p>{user.exigences}</p>
+                                </div>
+                            </div>
                         </div>
+                        <div className="col-lg-9">
+                            <div className="card-columns">
+                                {user.annonces!.map(annonce => (
+                                    <AnnonceCardColunn key={annonce.id} annonce={annonce}/>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={user.annonces!.length} onPageChanged={handleChangePage}/>
+
+                </div>
             ) : (
                 <h4 className="center">CHARGEMENT ...</h4>
             )}
