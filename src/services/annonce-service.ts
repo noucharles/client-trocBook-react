@@ -1,4 +1,6 @@
 import Annonce from "../models/annonce";
+import axios from "axios";
+
 export default class AnnonceService {
 
     static getAnnonces(): Promise<Annonce[]> {
@@ -19,19 +21,16 @@ export default class AnnonceService {
             if(classe){
 
                 if(classe === 'all') {
-                    return fetch(`http://localhost:3001/api/annonces?order[created]=desc`)
-                        .then(response => response.json())
-                        .then(res => res["hydra:member"])
+                    return axios.get(`http://localhost:3001/api/annonces?order[created]=desc`)
+                        .then(res => res.data["hydra:member"])
                         .catch(error => this.handleError(error));
                 }
-                return fetch(`http://localhost:3001/api/annonces?order[created]=desc&classe=${classe}`)
-                    .then(response => response.json())
-                    .then(res => res["hydra:member"])
+                return axios.get(`http://localhost:3001/api/annonces?order[created]=desc&classe=${classe}`)
+                    .then(res => res.data["hydra:member"])
                     .catch(error => this.handleError(error));
             }
-        return fetch(`http://localhost:3001/api/annonces?order[created]=desc`)
-            .then(response => response.json())
-            .then(res => res["hydra:member"])
+        return axios.get(`http://localhost:3001/api/annonces?order[created]=desc`)
+            .then(res => res.data["hydra:member"])
             .catch(error => this.handleError(error));
     }
 
@@ -44,8 +43,8 @@ export default class AnnonceService {
 
 
     static searchAnnonce(term: string): Promise<Annonce[]> {
-        return fetch(`http://localhost:3001/annonces?titre=${term}`)
-            .then(response => response.json())
+        return axios.get(`http://localhost:3001/annonces?titre=${term}`)
+            .then(response => response.data)
             .catch(error => this.handleError(error));
     }
 

@@ -1,10 +1,21 @@
 import Utilisateur from "../models/utilisateur";
+import axios from "axios";
+
 export default class UtilisateurService {
 
     static getUtilisateur(id: number): Promise<Utilisateur|null> {
-        return fetch(`http://localhost:3001/api/users/${id}`)
+        return axios.get(`http://localhost:3001/api/users/${id}`)
+            .then(res => this.isEmpty(res.data) ? null : res.data)
+            .catch(error => this.handleError(error));
+    }
+
+    static login(form: object): Promise<object> {
+        return fetch(`http://localhost:3001/api/login_check`, {
+            method: 'POST',
+            body: JSON.stringify(form),
+            headers: { 'Content-Type': 'application/json'}
+        })
             .then(response => response.json())
-            .then(data => this.isEmpty(data) ? null : data)
             .catch(error => this.handleError(error));
     }
 
