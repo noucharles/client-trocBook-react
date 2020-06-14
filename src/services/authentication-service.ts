@@ -1,5 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import Utilisateur from "../models/utilisateur";
 
 export default class AuthenticationService {
 
@@ -17,6 +18,29 @@ export default class AuthenticationService {
                 this.isAuthenticated = true;
                 return true;
             });
+    }
+
+    static getUtilisateurLogin()  {
+
+        // voir s'il y a un token
+        const token : any = window.localStorage.getItem("authToken");
+
+        // si le token est valide
+
+             const jwtData : any = jwtDecode(token);
+            return axios.get(`http://localhost:3001/api/users/${jwtData.id}`)
+                .then(res => this.isEmpty(res.data) ? null : res.data)
+                .catch(error => this.handleError(error));
+
+
+    }
+
+    static isEmpty(data: Object): boolean {
+        return Object.keys(data).length === 0;
+    }
+
+    static handleError(error: Error): void {
+        console.error(error);
     }
 
     static logout() {

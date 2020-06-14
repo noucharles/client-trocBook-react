@@ -9,16 +9,6 @@ export default class UtilisateurService {
             .catch(error => this.handleError(error));
     }
 
-    static login(form: object): Promise<object> {
-        return fetch(`http://localhost:3001/api/login_check`, {
-            method: 'POST',
-            body: JSON.stringify(form),
-            headers: { 'Content-Type': 'application/json'}
-        })
-            .then(response => response.json())
-            .catch(error => this.handleError(error));
-    }
-
     static getUtilisateurParClasse(classe?: string): Promise<Utilisateur[]> {
         if(classe){
 
