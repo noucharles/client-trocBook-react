@@ -1,34 +1,52 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import AuthenticationService from "../services/authentication-service";
 import AnnonceSearch from "./annonce-search";
 
-const Navbar: React.FC = () => {
+type Params = {
+    isAuthenticated: boolean,
+    onLogout: any
+};
+
+const Navbar: React.FC<Params> = ({isAuthenticated, onLogout}: Params) => {
+
+    const history = useHistory();
 
     const handleLogout = (): void => {
         AuthenticationService.logout();
+        onLogout(false);
+        history.push("/annonces");
     };
 
     return (
         <>
                 {/*La barre de navigation commun à toutes les pages*/}
-                <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div className="navbar-brand">
-                        <Link to="/" className="brand-logo center">TrocBook</Link>
-                    </div>
+                <nav className="navbar navbar-expand-lg navbar-light" style={{backgroundColor: "#e3f2fd"}}>
+                    <NavLink to="/" className="navbar-brand">TrocBook</NavLink>
+
                     <div className="collapse navbar-collapse" id="navbarColor01">
                         <AnnonceSearch />
                     </div>
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <a href="#" className="nav-link">Inscription</a>
+                            <NavLink to="/annonces/add" className="nav-link">Créer une annonce</NavLink>
                         </li>
-                        <li className="nav-item ml-2">
-                            <a href="#" className="btn btn-success">Connexion</a>
+                    </ul>
+                    <ul className="navbar-nav ml-auto">
+                        {(!isAuthenticated && ( <>
+                            <li className="nav-item">
+                                <NavLink to="/register" className="nav-link">Inscription</NavLink>
+                            </li>
+                            <li className="nav-item ml-2">
+                                <NavLink to="/login" className="btn btn-success">Connexion</NavLink>
+                            </li>
+                        </> )) || ( <>
+                        <li className="nav-item">
+                            <NavLink to="/Ma_Bibliothéque" className="nav-link">Ma Bibliothéque</NavLink>
                         </li>
                         <li className="nav-item ml-2">
                             <button onClick={handleLogout} className="btn btn-danger">Déconnexion</button>
-                        </li>
+                        </li> </>)}
                     </ul>
                 </nav>
         </>

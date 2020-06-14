@@ -1,14 +1,21 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { useState } from 'react';
 import AuthenticationService from "../services/authentication-service";
+import {useHistory} from "react-router-dom";
 
-const Login: FunctionComponent = () => {
+type Params = {
+    onLogin: any
+};
 
-    const [form, setForm] = useState({
+const Login: React.FC<Params> = ({ onLogin }: Params) => {
+
+const [form, setForm] = useState({
         username: "",
         password: "",
     });
 
     const [error, setError] = useState("");
+
+    const history = useHistory();
 
     // Gestion des champs
     const handleChange = (event : React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,6 +32,8 @@ const Login: FunctionComponent = () => {
         try {
             await AuthenticationService.login(form);
             setError("");
+            onLogin(true);
+            history.replace("/annonces/add");
         } catch (e) {
             setError("Aucun compte ne posséde cet Adresse email ou alors les informations ne correspondent pas");
         }
