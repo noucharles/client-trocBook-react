@@ -7,10 +7,24 @@ import Pagination from "../components/pagination";
 const Bibliotheque: React.FC = () => {
 
     const [user, setUser] = useState<Utilisateur|null>(null);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentCategorie, setCurrentCategorie] = useState<string>();
 
     useEffect(() => {
         AuthenticationService.getUtilisateurLogin().then(user => setUser(user));
     }, );
+
+
+    const handleChangePage = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const handleChangeCategorie = (categorie: string) => {
+        setCurrentCategorie(categorie);
+    };
+
+    const itemsPerPage = 10;
+    const start = currentPage * itemsPerPage - itemsPerPage;
 
     return (
         <>
@@ -47,6 +61,7 @@ const Bibliotheque: React.FC = () => {
                                 </div>
                             </div>
                         </div>
+                        <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={user.annonces!.length} onPageChanged={handleChangePage}/>
                     </div>
                 ) : (
                     <h4 className="center">CHARGEMENT ...</h4>
