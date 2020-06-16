@@ -39,7 +39,7 @@ const AnnonceList: FunctionComponent = () => {
                         <h1 className="my-4">Catégories</h1>
                         <div className="list-group">
                             {categories.map(categorie => (
-                                <button  className={"list-group-item" + (currentCategorie === categorie && " active")} onClick={() => handleChangeCategorie(categorie)}>{categorie}</button>
+                                <button key={categorie} className={"list-group-item" + (currentCategorie === categorie && " active")} onClick={() => handleChangeCategorie(categorie)}>{categorie}</button>
                             ))}
                         </div>
                     </div>

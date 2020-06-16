@@ -9,9 +9,10 @@ import Pagination from "./pagination";
 type Props = {
     annonce: Annonce,
     borderColor?: string,
+    biblio?: boolean
 };
 
-const AnnonceCardColunn: FunctionComponent<Props> = ({annonce, borderColor='#009688'}) => {
+const AnnonceCardColunn: FunctionComponent<Props> = ({annonce, borderColor='#009688', biblio}) => {
 
     const [color, setColor] = useState<string>();
     const history = useHistory();
@@ -25,7 +26,11 @@ const AnnonceCardColunn: FunctionComponent<Props> = ({annonce, borderColor='#009
     };
 
     const goToAnnonce = (id: number) => {
-        history.push(`/annonces/${id}`);
+        if (biblio) {
+            history.push(`/annonce/${id}`);
+        } else {
+            history.push(`/annonces/${id}`);
+        }
     };
 
     const formatDate = (str: any) => {

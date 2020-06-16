@@ -3,18 +3,9 @@ import axios from "axios";
 
 export default class AnnonceService {
 
-    static getAnnonces(): Promise<Annonce[]> {
-        return fetch('http://localhost:3001/api/annonces?order[created]=desc')
-            .then(response => response.json())
-            .then(res => res["hydra:member"])
-            .catch(error => this.handleError(error));
-    }
-
-    static getAnnonce(id: number): Promise<Annonce|null> {
-        return fetch(`http://localhost:3001/api/annonces/${id}`)
-            .then(response => response.json())
-            .then(data => this.isEmpty(data) ? null : data)
-            .catch(error => this.handleError(error));
+    static getAnnonce(id: number): Promise<Annonce> {
+        return axios.get(`http://localhost:3001/api/annonces/${id}`)
+            .then(res => this.isEmpty(res.data) ? null : res.data);
     }
 
     static getAnnoncesParClasse(classe?: string): Promise<Annonce[]> {
@@ -34,11 +25,12 @@ export default class AnnonceService {
             .catch(error => this.handleError(error));
     }
 
-    static postAnnonce(annonce: any) {
-        return axios.post(`http://localhost:3001/api/annonces/`, annonce)
-            .then(res => res.data)
-            .then(res => console.log(res))
-            .catch(error => console.log(error.res));
+    static  updateAnnonce(id: any, annonce : any) {
+        return axios.put(`http://localhost:3001/api/annonces/${id}`,annonce);
+    }
+
+    static  postAnnonce(annonce: any) {
+        return axios.post("http://localhost:3001/api/annonces",annonce);
     }
 
     static getAnnoncesParPage(num: number): Promise<Annonce[]> {

@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Field from "../components/forms/Field";
-import {useHistory} from "react-router";
+import {RouteComponentProps, useHistory} from "react-router";
 import {Link} from "react-router-dom";
 import AnnonceService from "../services/annonce-service";
 import axios from "axios";
-import {number} from "prop-types";
 
-const AnnonceAdd: React.FC = () => {
+type Params = { id: string };
+
+const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
+
+    const id  = match.params.id;
 
     const [form, setForm] = useState({
         ville: "",
@@ -27,11 +30,41 @@ const AnnonceAdd: React.FC = () => {
         description: ""
     });
 
+    const [editing, setEditing] = useState(false);
+
+    // Recuperation des annonces en fonction de l'identtifiant
+    const fetchAnnonce = async (id: any) => {
+        try {
+            const data = await axios.get(`http://localhost:3001/api/annonces/${id}`)
+                .then(response => response.data);
+
+            setForm({ville: data.ville , classe: data.classe!, titre: data.titre, editeur: data.editeur, parution: data.parution, description: data.description});
+        } catch (e) {
+        }
+
+    };
+
+    //Chargement de l'annonce si besoin au changement du composant ou au changement de l'identifiant
+    useEffect(() =>  {
+        if (id !== "new") {
+            setEditing(true);
+            fetchAnnonce(id);
+        }
+    }, [id]);
+
     const history = useHistory();
 
     // Gestion des champs Input
     const handleChange = (event : React.ChangeEvent<HTMLInputElement>): void => {
         const value = event.currentTarget.value;
+        const name = event.currentTarget.name;
+
+        setForm({...form, [name]: value});
+    };
+
+    // Gestion des champs Input Parution
+    const handleChangeParution = (event : React.ChangeEvent<HTMLInputElement>): void => {
+        const value = parseInt(event.currentTarget.value);
         const name = event.currentTarget.name;
 
         setForm({...form, [name]: value});
@@ -58,17 +91,38 @@ const AnnonceAdd: React.FC = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:3001/api/annonces",form);
-            console.log(response.data);
-        } catch (error) {
-            console.log(error.response);
+
+            if (editing) {
+                await AnnonceService.updateAnnonce(id, form);
+                history.replace("/Ma_Bibliothéque");
+            } else {
+                await AnnonceService.postAnnonce(form);
+                setError({
+                    ville: "",
+                    titre: "",
+                    editeur: "",
+                    parution: "",
+                    description: ""
+                });
+                history.replace("/annonces");
+            }
+        } catch ({response}) {
+            const { violations } = response.data;
+            if(violations) {
+                const apiErrors : any = {};
+                violations.forEach((violation : any)  => {
+                    apiErrors[violation.propertyPath] = violation.message;
+                });
+
+                setError(apiErrors);
+            }
         }
 
     };
 
     return (
         <>
-            <h1 className="col-5 offset-3">Création d'une annonce</h1>
+            {!editing && <h1 className="col-5 offset-3">Création d'une annonce</h1> || <h1 className="col-5 offset-3">Modification d'une annonce</h1>}
 
             <form onSubmit={handleSubmit} className="col-5 offset-3">
                 <Field name="titre" label="Titre" value={form.titre} onChange={handleChange} placeholder="Titre du livre" type="text" error={error.titre}/>
@@ -88,8 +142,7 @@ const AnnonceAdd: React.FC = () => {
 
                 <div className="form-group">
                     <label htmlFor="parution">Année de parution</label>
-                    <input type="number" onChange={handleChange} value={form.parution} min="1970" id="parution" className={"form-control" + (error.parution && " is-invalid") } name="parution" />
-                    {error && <p className="invalid-feedback">{error.parution}</p>}
+                    <input type="number" onChange={handleChangeParution} value={form.parution} min="1970" id="parution" className="form-control" name="parution" />
                 </div>
 
                 <div className="form-group">

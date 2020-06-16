@@ -56,7 +56,7 @@ const Bibliotheque: React.FC = () => {
                             <div className="col-lg-9">
                                 <div className="card-columns">
                                     {user.annonces!.map(annonce => (
-                                        <AnnonceCardColunn key={annonce.id} annonce={annonce}/>
+                                        <AnnonceCardColunn key={annonce.id} annonce={annonce} biblio={true}/>
                                     ))}
                                 </div>
                             </div>

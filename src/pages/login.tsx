@@ -34,7 +34,7 @@ const [form, setForm] = useState({
             await AuthenticationService.login(form);
             setError("");
             onLogin(true);
-            history.replace("/annonce/add");
+            history.replace("/annonce/new");
         } catch (e) {
             setError("Aucun compte ne posséde cet Adresse email ou alors les informations ne correspondent pas");
         }
