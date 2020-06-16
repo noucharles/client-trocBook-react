@@ -29,7 +29,7 @@ const Navbar: React.FC<Params> = ({isAuthenticated, onLogout}: Params) => {
                     </div>
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <NavLink to="/annonces/add" className="nav-link">Créer une annonce</NavLink>
+                            <NavLink to="/annonce/new" className="nav-link">Créer une annonce</NavLink>
                         </li>
                     </ul>
                     <ul className="navbar-nav ml-auto">

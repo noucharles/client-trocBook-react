@@ -7,7 +7,7 @@ export default class Annonce {
     editeur ?: string;
     parution ?: number;
     description ?: string;
-    created : string;
+    created ?: string;
     user ?: User;
 
     // 2. Définition des valeurs par défaut des propriétés d'une annonce.
@@ -19,7 +19,7 @@ export default class Annonce {
         editeur ?: string,
         parution ?: number,
         description ?: string,
-        created : string = new Date().toString(),
+        created ?: string,
         user ?: User
     ) {
         // 3. Initialisation des propiétés d'une annonce.

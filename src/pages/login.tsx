@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AuthenticationService from "../services/authentication-service";
 import {useHistory} from "react-router-dom";
+import Field from "../components/forms/Field";
 
 type Params = {
     onLogin: any
@@ -33,7 +34,7 @@ const [form, setForm] = useState({
             await AuthenticationService.login(form);
             setError("");
             onLogin(true);
-            history.replace("/annonces/add");
+            history.replace("/annonce/add");
         } catch (e) {
             setError("Aucun compte ne posséde cet Adresse email ou alors les informations ne correspondent pas");
         }
@@ -44,15 +45,8 @@ const [form, setForm] = useState({
             <h1 className="col-5 offset-3 mt-4">Connexion a l'application</h1>
 
             <form  onSubmit={handleSubmit} className="col-5 offset-3">
-                <div className="form-group">
-                    <label htmlFor="username">Adresse email</label>
-                    <input type="text" onChange={handleChange} className={"form-control" + (error && " is-invalid") } value={form.username} placeholder="Adresse email de connexion" id="username" name="username"/>
-                    {error && <p className="invalid-feedback">{error}</p>}
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Mot de passe</label>
-                    <input type="password" onChange={handleChange} className="form-control" value={form.password} placeholder="Mot de passe" id="password" name="password"/>
-                </div>
+                <Field name="username" label="Adresse email" value={form.username} onChange={handleChange} placeholder="Adresse email de connexion" type="text" error={error}/>
+                <Field name="password" label="Mot de passe" value={form.password} onChange={handleChange} placeholder="Mot de passe" type="password" error=""/>
                 <div className="form-group">
                     <button type="submit" className="btn btn-success">Je me connecte</button>
                 </div>

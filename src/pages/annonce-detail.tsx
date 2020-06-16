@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import {RouteComponentProps, Link, useHistory} from 'react-router-dom';
+import {RouteComponentProps, useHistory} from 'react-router-dom';
 import AnnonceService from "../services/annonce-service";
 import {Carousel, } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,6 +24,10 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
 
     const goToAnnoncesUser = (id: number) => {
         history.push(`/annonces/utilisateur/${id}`);
+    };
+
+    const goToAnnonceAdd = () => {
+        history.push(`/annonce/new`);
     };
 
     return (
@@ -107,7 +111,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
                         <div className="card-body">
                             <h3 className="text-lg-center">Qu'avez-vous à troquez ?</h3><br />
                             <p className="text-center">Troquez tout vos livres scolaires gratuitement sur TrocBook</p>
-                            <button type="button" className="offset-3 btn btn-primary btn-lg ">Publiez votre annonce gratuitement</button>
+                            <button type="button" className="offset-3 btn btn-primary btn-lg" onClick={goToAnnonceAdd}>Publiez votre annonce gratuitement</button>
                             <hr />
                             <ul>
                                 <h4>Nos Conseils de Sécurité</h4>

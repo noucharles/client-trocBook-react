@@ -34,6 +34,13 @@ export default class AnnonceService {
             .catch(error => this.handleError(error));
     }
 
+    static postAnnonce(annonce: any) {
+        return axios.post(`http://localhost:3001/api/annonces/`, annonce)
+            .then(res => res.data)
+            .then(res => console.log(res))
+            .catch(error => console.log(error.res));
+    }
+
     static getAnnoncesParPage(num: number): Promise<Annonce[]> {
         return fetch(`http://localhost:3001/api/annonces?page=${num}&order[created]=desc`)
             .then(response => response.json())

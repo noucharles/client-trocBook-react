@@ -26,7 +26,7 @@ const App: React.FC = () => {
                     <Route exact path="/" component={AnnonceList}/>
                     <Route exact path="/login" render={props => <Login onLogin={setIsAuthenticated}/>}/>
                     <Route exact path="/annonces" component={AnnonceList}/>
-                    <PrivateRoute exact path="/annonces/add" component={AnnonceAdd}/>
+                    <PrivateRoute exact path="/annonce/:id" component={AnnonceAdd}/>
                     <Route exact path="/annonces/utilisateur/:id" component={AnnonceUtilisateur}/>
                     <Route exact path="/annonces/:id" component={AnnonceDetail}/>
                     <PrivateRoute exact path="/Ma_Bibliothéque" component={Bibliotheque}/>
