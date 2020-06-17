@@ -9,6 +9,7 @@ import AnnonceCard from "../components/annonce-card";
 import './annonce-utilisateur.css';
 import AnnonceCardColunn from "../components/annonce-cardColunn";
 import Pagination from "../components/pagination";
+import Loaderb from "../components/loaderb";
 
 type Params = { id: string };
 
@@ -70,11 +71,12 @@ const AnnonceUtilisateur: FunctionComponent<RouteComponentProps<Params>> = ({ ma
                     </div>
 
 
-                    <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={user.annonces!.length} onPageChanged={handleChangePage}/>
-
+                    {itemsPerPage < user.annonces!.length && (
+                        <Pagination currentPage={currentPage} itemsPerPage={itemsPerPage} length={user.annonces!.length} onPageChanged={handleChangePage}/>
+                    )}
                 </div>
             ) : (
-                <h4 className="center">CHARGEMENT ...</h4>
+                <Loaderb />
             )}
         </div>
     );

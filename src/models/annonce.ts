@@ -1,10 +1,10 @@
 export default class Annonce {
     // 1. Typage des propiétés d'une annonce.
     id : number;
-    ville ?: string;
+    ville : string;
     classe ?: string;
-    titre ?: string;
-    editeur ?: string;
+    titre : string;
+    editeur : string;
     parution ?: number;
     description ?: string;
     created ?: string;
@@ -13,10 +13,10 @@ export default class Annonce {
     // 2. Définition des valeurs par défaut des propriétés d'une annonce.
     constructor(
         id : number,
-        ville ?: string,
+        ville : string = "",
         classe ?: string,
-        titre ?: string,
-        editeur ?: string,
+        titre : string = "",
+        editeur : string = "",
         parution ?: number,
         description ?: string,
         created ?: string,

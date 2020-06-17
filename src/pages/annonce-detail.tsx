@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Annonce from "../models/annonce";
 import moment from "moment";
 import 'moment/locale/fr';
+import Loaderb from "../components/loaderb";
 
 type Params = { id: string };
 
@@ -127,7 +128,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
             </div>
         </div>
             ) : (
-                <h4 className="center">CHARGEMENT ...</h4>
+                <Loaderb />
             )}
         </div>
     );

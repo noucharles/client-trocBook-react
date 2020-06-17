@@ -1,7 +1,6 @@
 import React from 'react';
 import {NavLink, useHistory} from "react-router-dom";
 import AuthenticationService from "../services/authentication-service";
-import AnnonceSearch from "./annonce-search";
 
 type Params = {
     isAuthenticated: boolean,
@@ -25,7 +24,6 @@ const Navbar: React.FC<Params> = ({isAuthenticated, onLogout}: Params) => {
                     <NavLink to="/" className="navbar-brand">TrocBook</NavLink>
 
                     <div className="collapse navbar-collapse" id="navbarColor01">
-                        <AnnonceSearch />
                     </div>
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">

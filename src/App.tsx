@@ -11,7 +11,8 @@ import Bibliotheque from "./pages/bibliotheque";
 import AuthenticationService from "./services/authentication-service";
 import PageNotFound from "./pages/page-not-found";
 import Register from "./pages/register";
-
+import BibliothequeUpdateInfos from "./pages/bibliotheque-update-infos";
+import BibliothequeUpdateExigence from "./pages/bibliotheque-update-exigence";
 AuthenticationService.setup();
 
 const App: React.FC = () => {
@@ -33,6 +34,8 @@ const App: React.FC = () => {
                     <Route exact path="/annonces/utilisateur/:id" component={AnnonceUtilisateur}/>
                     <Route exact path="/annonces/:id" component={AnnonceDetail}/>
                     <PrivateRoute exact path="/Ma_Bibliothéque" component={Bibliotheque}/>
+                    <PrivateRoute exact path="/Ma_Bibliothéque/update/infos/:id" component={BibliothequeUpdateInfos}/>
+                    <PrivateRoute exact path="/Ma_Bibliothéque/update/exigences/:id" component={BibliothequeUpdateExigence}/>
                     <Route component={PageNotFound}/>
                 </Switch>
             </div>
