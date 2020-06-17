@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AuthenticationService from "../services/authentication-service";
 import {Link, useHistory} from "react-router-dom";
 import Field from "../components/forms/Field";
+import {toast} from "react-toastify";
 
 type Params = {
     onLogin: any
@@ -34,9 +35,11 @@ const [form, setForm] = useState({
             await AuthenticationService.login(form);
             setError("");
             onLogin(true);
+            toast.success("Vous êtes désormais connecté");
             history.replace("/annonce/new");
         } catch (e) {
             setError("Aucun compte ne posséde cet Adresse email ou alors les informations ne correspondent pas");
+            toast.error("Une erreur est survnue :/");
         }
     };
 

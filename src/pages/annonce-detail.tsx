@@ -7,6 +7,7 @@ import Annonce from "../models/annonce";
 import moment from "moment";
 import 'moment/locale/fr';
 import Loaderb from "../components/loaderb";
+import {toast} from "react-toastify";
 
 type Params = { id: string };
 
@@ -25,6 +26,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
 
     const goToAnnoncesUser = (id: number) => {
         history.push(`/annonces/utilisateur/${id}`);
+        toast.info(`Vous etes dans la bibliothéque de ${annonce!.user!.firstName} ${annonce!.user!.lastName}`);
     };
 
     const goToAnnonceAdd = () => {

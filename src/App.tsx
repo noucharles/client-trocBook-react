@@ -13,6 +13,8 @@ import PageNotFound from "./pages/page-not-found";
 import Register from "./pages/register";
 import BibliothequeUpdateInfos from "./pages/bibliotheque-update-infos";
 import BibliothequeUpdateExigence from "./pages/bibliotheque-update-exigence";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 AuthenticationService.setup();
 
 const App: React.FC = () => {
@@ -39,6 +41,8 @@ const App: React.FC = () => {
                     <Route component={PageNotFound}/>
                 </Switch>
             </div>
+
+            <ToastContainer position={"bottom-left"}/>
         </Router>
     )
 };

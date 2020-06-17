@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Field from "../components/forms/Field";
 import {Link, useHistory} from "react-router-dom";
 import UtilisateurService from "../services/utilisateur-service";
+import {toast} from "react-toastify";
 
 const Register: React.FC = () => {
 
@@ -60,6 +61,7 @@ const Register: React.FC = () => {
         if (user.password !== user.passwordConfirm) {
             apiErrors.passwordConfirm = "Votre confirmation de mot de passe n'est pas conforme avec le mot de passe original";
             setErrors(apiErrors);
+            toast.error("Des erreurs dans votre formulaire :/");
             return ;
         }
 
@@ -74,6 +76,7 @@ const Register: React.FC = () => {
                 number : "",
                 exigences : ""
             });
+            toast.success("Vous etes désormais inscrit, vous pouvez vous connecter.Bienvenue dans la famille :)");
             history.replace("/login");
 
         } catch (error) {
@@ -85,6 +88,7 @@ const Register: React.FC = () => {
                 });
 
                 setErrors(apiErrors);
+                toast.error("Des erreurs dans votre formulaire :/");
             }
         }
 

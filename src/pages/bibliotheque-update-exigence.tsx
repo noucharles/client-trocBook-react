@@ -1,6 +1,7 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {RouteComponentProps, useHistory} from "react-router";
 import UtilisateurService from "../services/utilisateur-service";
+import {toast} from "react-toastify";
 
 type Params = { id: string };
 
@@ -38,6 +39,7 @@ const BibliothequeUpdateExigence: FunctionComponent<RouteComponentProps<Params>>
             setErrors({
                 exigences : ""
             });
+            toast.success("Vos exigences pour un ou plusieurs troc(s) ont été mises à jour");
             history.replace("/Ma_Bibliothéque");
 
         } catch (error) {
@@ -50,6 +52,7 @@ const BibliothequeUpdateExigence: FunctionComponent<RouteComponentProps<Params>>
                 });
 
                 setErrors(apiErrors);
+                toast.error("Une erreur est survenue");
             }
         }
 

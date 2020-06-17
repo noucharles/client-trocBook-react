@@ -1,6 +1,7 @@
 import React from 'react';
 import {NavLink, useHistory} from "react-router-dom";
 import AuthenticationService from "../services/authentication-service";
+import {toast} from "react-toastify";
 
 type Params = {
     isAuthenticated: boolean,
@@ -14,6 +15,7 @@ const Navbar: React.FC<Params> = ({isAuthenticated, onLogout}: Params) => {
     const handleLogout = (): void => {
         AuthenticationService.logout();
         onLogout(false);
+        toast.info("Vous êtes désormais déconnecté :)");
         history.push("/annonces");
     };
 

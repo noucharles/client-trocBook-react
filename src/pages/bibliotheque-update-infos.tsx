@@ -3,6 +3,7 @@ import {RouteComponentProps, useHistory} from "react-router";
 import UtilisateurService from "../services/utilisateur-service";
 import Field from "../components/forms/Field";
 import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
 
 type Params = { id: string };
 
@@ -56,6 +57,7 @@ const BibliothequeUpdateInfos: FunctionComponent<RouteComponentProps<Params>> = 
                 lastName : "",
                 number : "",
             });
+            toast.success("Vos informations ont été mises à jour");
             history.replace("/Ma_Bibliothéque");
 
         } catch ({response}) {
@@ -68,6 +70,7 @@ const BibliothequeUpdateInfos: FunctionComponent<RouteComponentProps<Params>> = 
                 });
 
                 setErrors(apiErrors);
+                toast.error("Une erreur est survenue");
             }
         }
 

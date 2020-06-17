@@ -4,6 +4,7 @@ import {RouteComponentProps, useHistory} from "react-router";
 import {Link} from "react-router-dom";
 import AnnonceService from "../services/annonce-service";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 type Params = { id: string };
 
@@ -95,8 +96,10 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
             if (editing) {
                 if (event.currentTarget.name !== "save"){
                     await AnnonceService.deleteAnnonce(id, form);
+                    toast.success("Annonce supprimé");
                 } else {
                     await AnnonceService.updateAnnonce(id, form);
+                    toast.success("Annonce mise à jour");
                 }
                 history.replace("/Ma_Bibliothéque");
             } else {
@@ -108,6 +111,7 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
                     parution: "",
                     description: ""
                 });
+                toast.success("Annonce crée avec succes");
                 history.replace("/annonces");
             }
         } catch ({response}) {
@@ -117,7 +121,7 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
                 violations.forEach((violation : any)  => {
                     apiErrors[violation.propertyPath] = violation.message;
                 });
-
+                toast.error("Une erreur est survenue");
                 setError(apiErrors);
             }
         }
