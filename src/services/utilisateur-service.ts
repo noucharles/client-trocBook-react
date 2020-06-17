@@ -9,6 +9,10 @@ export default class UtilisateurService {
             .catch(error => this.handleError(error));
     }
 
+    static postUtilisateur(utilisateur: any) {
+        return axios.post("http://localhost:3001/api/users",utilisateur);
+    }
+
     static getUtilisateurParClasse(classe?: string): Promise<Utilisateur[]> {
         if(classe){
 

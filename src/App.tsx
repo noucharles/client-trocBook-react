@@ -9,6 +9,8 @@ import AnnonceAdd from "./pages/annonce-add";
 import PrivateRoute from "./PrivateRoute";
 import Bibliotheque from "./pages/bibliotheque";
 import AuthenticationService from "./services/authentication-service";
+import PageNotFound from "./pages/page-not-found";
+import Register from "./pages/register";
 
 AuthenticationService.setup();
 
@@ -25,11 +27,13 @@ const App: React.FC = () => {
                 <Switch>
                     <Route exact path="/" component={AnnonceList}/>
                     <Route exact path="/login" render={props => <Login onLogin={setIsAuthenticated}/>}/>
+                    <Route exact path="/register" component={Register}/>
                     <Route exact path="/annonces" component={AnnonceList}/>
                     <PrivateRoute exact path="/annonce/:id" component={AnnonceAdd}/>
                     <Route exact path="/annonces/utilisateur/:id" component={AnnonceUtilisateur}/>
                     <Route exact path="/annonces/:id" component={AnnonceDetail}/>
                     <PrivateRoute exact path="/Ma_Bibliothéque" component={Bibliotheque}/>
+                    <Route component={PageNotFound}/>
                 </Switch>
             </div>
         </Router>

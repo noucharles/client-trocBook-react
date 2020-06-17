@@ -3,6 +3,7 @@ import Utilisateur from "../models/utilisateur";
 import AuthenticationService from "../services/authentication-service";
 import AnnonceCardColunn from "../components/annonce-cardColunn";
 import Pagination from "../components/pagination";
+import jwtDecode from "jwt-decode";
 
 const Bibliotheque: React.FC = () => {
 
@@ -10,9 +11,15 @@ const Bibliotheque: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [currentCategorie, setCurrentCategorie] = useState<string>();
 
+    // voir s'il y a un token
+    const token : any = window.localStorage.getItem("authToken");
+
+    // si le token est valide
+    const jwtData : any = jwtDecode(token);
+
     useEffect(() => {
-        AuthenticationService.getUtilisateurLogin().then(user => setUser(user));
-    }, );
+        AuthenticationService.getUtilisateurLogin(jwtData.id).then(user => setUser(user));
+    }, [jwtData.id]);
 
 
     const handleChangePage = (page: number) => {

@@ -20,19 +20,10 @@ export default class AuthenticationService {
             });
     }
 
-    static getUtilisateurLogin()  {
-
-        // voir s'il y a un token
-        const token : any = window.localStorage.getItem("authToken");
-
-        // si le token est valide
-
-             const jwtData : any = jwtDecode(token);
-            return axios.get(`http://localhost:3001/api/users/${jwtData.id}`)
+    static getUtilisateurLogin(id: any)  {
+            return axios.get(`http://localhost:3001/api/users/${id}`)
                 .then(res => this.isEmpty(res.data) ? null : res.data)
                 .catch(error => this.handleError(error));
-
-
     }
 
     static isEmpty(data: Object): boolean {

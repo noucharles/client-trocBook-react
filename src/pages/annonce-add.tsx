@@ -93,7 +93,11 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
         try {
 
             if (editing) {
-                await AnnonceService.updateAnnonce(id, form);
+                if (event.currentTarget.name !== "save"){
+                    await AnnonceService.deleteAnnonce(id, form);
+                } else {
+                    await AnnonceService.updateAnnonce(id, form);
+                }
                 history.replace("/Ma_Bibliothéque");
             } else {
                 await AnnonceService.postAnnonce(form);
@@ -154,7 +158,8 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
                 <Field name="ville" label="Quartier" value={form.ville} onChange={handleChange} placeholder="Votre quartier" type="text" error={error.ville}/>
 
                 <div className="form-group">
-                    <button type="submit" className="btn btn-success">Enregistrer</button>
+                    <button type="submit" name="save" className="btn btn-success">Enregistrer</button>
+                    {editing && <button type="submit" name="delete" className="mx-3 btn btn-danger">Supprimer l'annonce</button>}
                     <Link to="/annonces" className="btn btn-link">Retour à la liste d'annonces</Link>
                 </div>
             </form>

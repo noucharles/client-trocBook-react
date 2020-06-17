@@ -29,6 +29,10 @@ export default class AnnonceService {
         return axios.put(`http://localhost:3001/api/annonces/${id}`,annonce);
     }
 
+    static deleteAnnonce(id: any, annonce : any) {
+        return axios.delete(`http://localhost:3001/api/annonces/${id}`,annonce);
+    }
+
     static  postAnnonce(annonce: any) {
         return axios.post("http://localhost:3001/api/annonces",annonce);
     }

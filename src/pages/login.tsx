@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AuthenticationService from "../services/authentication-service";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import Field from "../components/forms/Field";
 
 type Params = {
@@ -49,6 +49,7 @@ const [form, setForm] = useState({
                 <Field name="password" label="Mot de passe" value={form.password} onChange={handleChange} placeholder="Mot de passe" type="password" error=""/>
                 <div className="form-group">
                     <button type="submit" className="btn btn-success">Je me connecte</button>
+                    <Link to="/register" className="btn btn-link">Pas de compte ?</Link>
                 </div>
             </form>
         </div>
