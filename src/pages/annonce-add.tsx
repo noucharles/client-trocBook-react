@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import AnnonceService from "../services/annonce-service";
 import axios from "axios";
 import {toast} from "react-toastify";
+import {ANNONCES_API} from "../config";
 
 type Params = { id: string };
 
@@ -36,7 +37,7 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
     // Recuperation des annonces en fonction de l'identtifiant
     const fetchAnnonce = async (id: any) => {
         try {
-            const data = await axios.get(`http://localhost:3001/api/annonces/${id}`)
+            const data = await axios.get(`${ANNONCES_API}/${id}`)
                 .then(response => response.data);
 
             setForm({ville: data.ville , classe: data.classe!, titre: data.titre, editeur: data.editeur, parution: data.parution, description: data.description});
@@ -87,20 +88,35 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
         setForm({...form, [name]: value});
     };
 
-    // Gestion du submit
+    // Gestion du submit supprimé annonce
+    const handleAlternate = async (event: any ) => {
+        try{
+            event.preventDefault();
+            await AnnonceService.deleteAnnonce(id, form);
+            toast.success("Annonce supprimé");
+            history.replace("/Ma_Bibliothéque");
+        } catch ({response}) {
+            const { violations } = response.data;
+            if(violations) {
+                const apiErrors : any = {};
+                violations.forEach((violation : any)  => {
+                apiErrors[violation.propertyPath] = violation.message;
+            });
+            toast.error("Une erreur est survenue");
+            setError(apiErrors);
+        }
+        }
+    };
+
+    // Gestion du submit modifié annonce
     const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
 
             if (editing) {
-                if (event.currentTarget.name !== "save"){
-                    await AnnonceService.deleteAnnonce(id, form);
-                    toast.success("Annonce supprimé");
-                } else {
-                    await AnnonceService.updateAnnonce(id, form);
-                    toast.success("Annonce mise à jour");
-                }
+                await AnnonceService.updateAnnonce(id, form);
+                await toast.success("Annonce mise à jour");
                 history.replace("/Ma_Bibliothéque");
             } else {
                 await AnnonceService.postAnnonce(form);
@@ -163,7 +179,7 @@ const AnnonceAdd: React.FC<RouteComponentProps<Params>> = ({ match }) => {
 
                 <div className="form-group">
                     <button type="submit" name="save" className="btn btn-success">Enregistrer</button>
-                    {editing && <button type="submit" name="delete" className="mx-3 btn btn-danger">Supprimer l'annonce</button>}
+                    {editing && <button type="button" onClick={handleAlternate} name="delete" className="mx-3 btn btn-danger">Supprimer l'annonce</button>}
                     <Link to="/annonces" className="btn btn-link">Retour à la liste d'annonces</Link>
                 </div>
             </form>

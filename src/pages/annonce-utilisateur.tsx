@@ -5,7 +5,6 @@ import moment from "moment";
 import 'moment/locale/fr';
 import UtilisateurService from "../services/utilisateur-service";
 import Utilisateur from "../models/utilisateur";
-import AnnonceCard from "../components/annonce-card";
 import './annonce-utilisateur.css';
 import AnnonceCardColunn from "../components/annonce-cardColunn";
 import Pagination from "../components/pagination";

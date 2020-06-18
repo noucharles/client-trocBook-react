@@ -1,13 +1,13 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import Utilisateur from "../models/utilisateur";
+import {LOGIN_API, UTILISATEURS_API} from "../config";
 
 export default class AuthenticationService {
 
     static isAuthenticated: boolean = false;
 
     static login(form : object) : Promise<boolean>{
-        return axios.post(`http://localhost:3001/api/login_check`, form)
+        return axios.post(`${LOGIN_API}`, form)
             .then(response  => response.data.token)
             .then(token => {
                 // Je stocke mon token dans le localStorage
@@ -21,7 +21,7 @@ export default class AuthenticationService {
     }
 
     static getUtilisateurLogin(id: any)  {
-            return axios.get(`http://localhost:3001/api/users/${id}`)
+            return axios.get(`${UTILISATEURS_API}/${id}`)
                 .then(res => this.isEmpty(res.data) ? null : res.data)
                 .catch(error => this.handleError(error));
     }

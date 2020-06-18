@@ -26,7 +26,7 @@ const AnnonceDetail: FunctionComponent<RouteComponentProps<Params>> = ({ match }
 
     const goToAnnoncesUser = (id: number) => {
         history.push(`/annonces/utilisateur/${id}`);
-        toast.info(`Vous etes dans la bibliothéque de ${annonce!.user!.firstName} ${annonce!.user!.lastName}`);
+        toast.info(`Vous êtes dans la bibliothéque de ${annonce!.user!.firstName} ${annonce!.user!.lastName}`);
     };
 
     const goToAnnonceAdd = () => {
